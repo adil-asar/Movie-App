@@ -1,12 +1,20 @@
 import React from 'react'
+import Home from './Components/Home';
+import SingleMovie from './Components/SingleMovie'
+
+import {Routes,Route} from 'react-router-dom'
+import Error from './Components/Error';
 
 const App = () => {
   return (
-    <div className='app'>
-<h2>
-  Muhammad Adil is good boy
-</h2>
-    </div>
+    <>
+<Routes>
+  <Route path='/' element={<Home/>} />
+  <Route path='movie/:id' element={<SingleMovie/>}/>
+  <Route path='*' element={<Error/>} />
+</Routes>
+    </>
+
   )
 }
 

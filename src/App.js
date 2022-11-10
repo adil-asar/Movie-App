@@ -1,7 +1,7 @@
 import React from 'react'
 import Home from './Components/Home';
 import SingleMovie from './Components/SingleMovie'
-
+import './index.css';
 import {Routes,Route} from 'react-router-dom'
 import Error from './Components/Error';
 

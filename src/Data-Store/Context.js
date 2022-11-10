@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const AppContext =  createContext();
 ;
-const API = `http://www.omdbapi.com/?apikey=420f48ce&s=titanic`;
+export const API = `http://www.omdbapi.com/?apikey=420f48ce`;
 
 // context provider
 
@@ -13,7 +13,8 @@ const AppProvider = ({children}) => {
 
     const [apidata, setapidata] = useState([])
 const [load, setload] = useState(true)
-  
+const [query, setquery] = useState('Titanic')
+  const [isError, setisError] = useState({show:false, msg:''})
 
 // api fetching function
 const get_api = async (url)  => {
@@ -24,7 +25,16 @@ const get_api = async (url)  => {
      if (data.Response === 'True') {
         setapidata(data.Search)
         setload(false)
-     } 
+        setisError({
+            show:false,
+             msg:''
+        })
+     } else{
+        setisError({
+            show:true,
+             msg:data.Error
+        })
+     }
     } catch (error) {
         console.log(error);
     }
@@ -32,14 +42,20 @@ const get_api = async (url)  => {
 
 // useeefect for fetching
 useEffect(() => {
- get_api(API)
-}, [])
+
+   let debounce =  setTimeout(() => {
+        get_api(`${API}&s=${query}`)
+    }, 800);
+
+    return ()=> clearTimeout(debounce);
+ 
+}, [query])
 
 
 
 
 
-return <AppContext.Provider value={{apidata,load}} >{children}</AppContext.Provider>
+return <AppContext.Provider value={{apidata,load,query, setquery,isError}} >{children}</AppContext.Provider>
 }
 
 // custom hook for props
